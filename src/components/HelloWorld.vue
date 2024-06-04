@@ -1,40 +1,33 @@
 <script setup>
-import { ref } from 'vue'
+import { useQuery } from '@tanstack/vue-query'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
+import  WeatherIcon  from './WeatherIcon.vue'
 
-defineProps({
-  msg: String,
+const apiKey = import.meta.env.VITE_METEOSOURCE_KEY
+const fetcher = async () =>
+  await fetch(`https://www.meteosource.com/api/v1/free/point?place_id=budapest&sections=daily&language=en&units=metric&key=${apiKey}`).then((response) =>
+    response.json(),
+  )
+const { isPending, isError, isFetching, data, error, refetch } = useQuery({
+  queryKey: ['weather'],
+  queryFn: fetcher,
 })
-
-const count = ref(0)
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-  <button type="button" @click="count--">-</button>
-  <div :class="{'colored': count > 3}" class="box">count is {{ count }}</div>
-  <button type="button" @click="count++">+</button>
-  </div>
-
-  
+  <VueQueryDevtools />
+  <div class="items-list">
+    <template v-for="item in data.value.daily.data">
+      <span>{{item.day}}</span>
+      <span>{{item.weather}}</span>
+      <WeatherIcon :icon="item.icon" />
+    </template>
+  </div>  
 </template>
 
 <style scoped>
-.card {
-  display: flex; 
-  gap: 8px;
-  justify-content: center;
-}
-.read-the-docs {
-  color: #888;
-}
-.box {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-}
-.colored {
-  background: wheat;
+.items-list {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
 }
 </style>
