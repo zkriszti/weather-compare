@@ -1,11 +1,9 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import WeatherCompare from "./components/WeatherCompare.vue";
 </script>
 
 <template>
-  <HelloWorld />
+  <WeatherCompare />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
