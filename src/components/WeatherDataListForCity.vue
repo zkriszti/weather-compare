@@ -1,8 +1,9 @@
 <script setup>
 import { computed, ref } from "vue";
-import WeatherIcon from "./WeatherIcon.vue";
+
 import { useWeatherQuery } from "../data/weather";
 import Skeleton from "primevue/skeleton";
+import WeatherDataSingleRow from "./WeatherDataSingleRow.vue";
 
 const props = defineProps({
   selectedCity: Object,
@@ -37,10 +38,15 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
           :key="`row-${item.day}`"
           v-tooltip.bottom="item.summary"
         >
-          <span v-if="displayDate">{{ item.day }}</span>
-          <span>{{ Math.round(item.all_day.temperature_min) }}</span>
-          <span>{{ Math.round(item.all_day.temperature_max) }}</span>
-          <WeatherIcon :icon="item.icon" />
+          <!-- TODO: implement step-down logic -->
+          <WeatherDataSingleRow
+            :isActiveRow="index === 0"
+            displayDate
+            :day="item.day"
+            :min="Math.round(item.all_day.temperature_min)"
+            :max="Math.round(item.all_day.temperature_max)"
+            :icon="item.icon"
+          />
         </div>
       </div>
     </div>
@@ -56,15 +62,5 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
   > * {
     margin-bottom: 12px;
   }
-}
-.item-row {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  column-gap: 8px;
-  margin-bottom: 12px;
-}
-
-.item-row span {
-  align-content: center;
 }
 </style>
