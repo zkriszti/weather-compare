@@ -86,7 +86,7 @@ let diff = ref(0);
 
 const compareData = computed(() => {
   if (!city1.value || !city2.value) {
-    return "Please choose two cities to compare";
+    return "You need two selected cities for comparison";
   }
 
   if (weather1.weatherIsFetching.value || weather2.weatherIsFetching.value) {
