@@ -30,11 +30,10 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
     </div>
     <div v-else class="city-block-data-results">
       <!-- weatherData is loaded -->
-      <div class="items-list">
+      <div class="items-list" v-if="selectedCity">
         <div
-          v-if="selectedCity"
           class="item-row"
-          v-for="item in weatherData?.daily?.data"
+          v-for="(item, index) in weatherData?.daily?.data"
           :key="`row-${item.day}`"
           v-tooltip.bottom="item.summary"
         >
