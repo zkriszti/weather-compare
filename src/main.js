@@ -6,10 +6,10 @@ import './style.css'
 import App from './App.vue'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
-const app = createApp(App)
+const app = createApp(App);
 
 app.use(VueQueryPlugin)
 app.use(PrimeVue)
 app.directive('tooltip', Tooltip);
 
-app.mount('#app')
+app.mount("#app");
