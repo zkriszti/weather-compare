@@ -8,6 +8,7 @@ import WeatherDataSingleRow from "./WeatherDataSingleRow.vue";
 const props = defineProps({
   selectedCity: Object,
   displayDate: Boolean,
+  activeRow: Number,
 });
 
 const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
@@ -38,9 +39,8 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
           :key="`row-${item.day}`"
           v-tooltip.bottom="item.summary"
         >
-          <!-- TODO: implement step-down logic -->
           <WeatherDataSingleRow
-            :isActiveRow="index === 0"
+            :isActiveRow="index === activeRow"
             displayDate
             :day="item.day"
             :min="Math.round(item.all_day.temperature_min)"

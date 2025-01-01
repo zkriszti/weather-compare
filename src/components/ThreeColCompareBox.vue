@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import WeatherDataListForCity from "./WeatherDataListForCity.vue";
 import CompareResults from "./CompareResults.vue";
 import { useWeatherQuery } from "../data/weather";
+import { vOnClickOutside } from "@vueuse/components";
 
 const props = defineProps({
   selectedCities: Array,
@@ -15,6 +16,7 @@ const weather2 = useWeatherQuery(city2, "COMPARE W2");
 
 let diff = ref(0);
 const MINIMAL_DIFF_FOR_SAME_WEATHER_RESULT = 2;
+const DISPLAYED_DAYS_LENGTH = 7;
 
 const compareData = computed(() => {
   if (!city1.value || !city2.value) {
@@ -34,17 +36,48 @@ const compareData = computed(() => {
 
   return diff.value;
 });
+
+const isCityBoxActive = ref(false);
+const setIsCityBoxActive = (switchType = "toggle") => {
+  if (switchType === "toggle") {
+    isCityBoxActive.value = !isCityBoxActive.value;
+  } else {
+    // click outside case - WORKS, though it's not very intuitive code-wise
+    // as we need to know that providing no argument is only for clickOutside
+    isCityBoxActive.value = false;
+  }
+};
+const currentlyActiveRow = ref(0);
+const changeCurrentlyActiveRow = (v) => {
+  if (!isCityBoxActive.value) return;
+  const newIndex = currentlyActiveRow.value + v;
+  if (newIndex >= 0 && newIndex < DISPLAYED_DAYS_LENGTH) {
+    currentlyActiveRow.value = newIndex;
+  }
+  console.log(currentlyActiveRow.value);
+};
 </script>
 <template>
-  <div class="three-col-compare-box">
+  <!-- TODO: rather use the classNames library here -->
+  <div
+    class="three-col-compare-box"
+    :class="isCityBoxActive ? 'active' : null"
+    @click="setIsCityBoxActive('toggle')"
+    tabindex="0"
+    @keyup.down="changeCurrentlyActiveRow(1)"
+    @keyup.up="changeCurrentlyActiveRow(-1)"
+    v-on-click-outside="setIsCityBoxActive"
+  >
     <WeatherDataListForCity
       :selectedCity="selectedCities?.[0]"
       :key="selectedCities?.[0]?.id"
+      :activeRow="currentlyActiveRow"
       displayDate
     />
     <WeatherDataListForCity
       :selectedCity="selectedCities?.[1]"
       :key="selectedCities?.[1]?.id"
+      :activeRow="currentlyActiveRow"
       displayDate
     />
     <CompareResults :result="compareData" />
@@ -52,6 +85,10 @@ const compareData = computed(() => {
 </template>
 
 <style scoped>
+.active {
+  outline: 3px solid red;
+}
+
 .three-col-compare-box {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
