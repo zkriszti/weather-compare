@@ -1,11 +1,12 @@
 <script setup></script>
 
 <template>
-  <div class="weather-compare-header">HEADER</div>
+  <h1 class="weather-compare-header">weather-compare</h1>
 </template>
 
 <style scoped>
-.weather-compare-header {
+h1 {
   align-self: center;
+  font-family: "Rammetto One", sans-serif;
 }
 </style>

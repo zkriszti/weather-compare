@@ -4,6 +4,8 @@ import WeatherCompareHeader from "./WeatherCompareHeader.vue";
 import WeatherCompareBody from "./WeatherCompareBody.vue";
 </script>
 
+<!-- TODO: dark and light mode -->
+
 <template>
   <VueQueryDevtools />
   <div class="main-layout">
@@ -17,6 +19,6 @@ import WeatherCompareBody from "./WeatherCompareBody.vue";
   height: 100vh;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: auto 1fr;
 }
 </style>

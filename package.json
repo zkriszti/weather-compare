@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/rammetto-one": "^5.1.1",
     "@tanstack/vue-query": "^5.40.0",
     "@tanstack/vue-query-devtools": "^5.40.0",
     "primevue": "^3.52.0",
