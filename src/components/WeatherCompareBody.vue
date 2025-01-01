@@ -17,9 +17,9 @@ const cities = reactive([
 
 let selectedCities = ref([cities[0], cities[1]]);
 
-const compareData = computed(() => {
-  if (!city1.value || !city2.value) {
-    return "You need two selected cities for comparison";
+const handleCitiesChange = () => {
+  if (selectedCities.value.length > 2) {
+    selectedCities.value.splice(1, 1); // Remove the last selected item
   }
 };
 </script>
@@ -36,6 +36,7 @@ const compareData = computed(() => {
       placeholder="Select Cities"
       :maxSelectedLabels="2"
       class="w-full md:w-80"
+      @change="handleCitiesChange"
     />
     <ThreeColCompareBox :selectedCities="selectedCities" />
   </div>
