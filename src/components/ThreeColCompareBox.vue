@@ -38,18 +38,19 @@ const compareData = computed(() => {
 });
 
 const isCityBoxActive = ref(false);
-const setIsCityBoxActive = (switchType = "toggle") => {
-  if (switchType === "toggle") {
+const setIsCityBoxActive = (action) => {
+  if (action === "toggle") {
     isCityBoxActive.value = !isCityBoxActive.value;
   } else {
-    // click outside case - WORKS, though it's not very intuitive code-wise
-    // as we need to know that providing no argument is only for clickOutside
     isCityBoxActive.value = false;
   }
 };
 const currentlyActiveRow = ref(0);
-const changeCurrentlyActiveRow = (v) => {
+const changeCurrentlyActiveRow = (key) => {
   if (!isCityBoxActive.value) return;
+  // key can only be "ArrowDown" or "ArrowUp"
+  const v = key === "ArrowDown" ? 1 : -1;
+
   const newIndex = currentlyActiveRow.value + v;
   if (newIndex >= 0 && newIndex < DISPLAYED_DAYS_LENGTH) {
     currentlyActiveRow.value = newIndex;
@@ -64,8 +65,8 @@ const changeCurrentlyActiveRow = (v) => {
     :class="isCityBoxActive ? 'active' : null"
     @click="setIsCityBoxActive('toggle')"
     tabindex="0"
-    @keyup.down="changeCurrentlyActiveRow(1)"
-    @keyup.up="changeCurrentlyActiveRow(-1)"
+    @keydown.down.prevent="changeCurrentlyActiveRow('ArrowDown')"
+    @keydown.up.prevent="changeCurrentlyActiveRow('ArrowUp')"
     v-on-click-outside="setIsCityBoxActive"
   >
     <WeatherDataListForCity
