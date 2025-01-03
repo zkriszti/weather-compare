@@ -1,14 +1,32 @@
-// TODO: TO BE REPLACED WITH A SEARCHABLE DROPDOWN
-// the below line gives function size error in vue-mess-detector
-/* export const defaultCity1 = { id: "budapest", name: "Budapest" };
-export const defaultCity2 = { id: "alicante", name: "Alicante" };
-export const cities = [
-  defaultCity1,
-  defaultCity2,
-  { id: "cluj", name: "Cluj" },
-  { id: "lisbon", name: "Lisbon" },
-  { id: "madrid", name: "Madrid" },
-  { id: "portimao", name: "Portimão" },
-  { id: "oslo", name: "Oslo" },
-  { id: "berlin", name: "Berlin" },
-]; */
+import { useQuery } from "@tanstack/vue-query";
+import { computed, unref } from "vue";
+
+const apiKey = import.meta.env.VITE_METEOSOURCE_KEY;
+const fetcher = async (queryString) =>
+  await fetch(
+    `https://www.meteosource.com/api/v1/free/find_places?text=${queryString}&key=${apiKey}`
+  ).then((response) => response.json());
+
+export const usePlaceQuery = (placeRef, initiator) => {
+  // TODO: double-check if we really need unref here
+  const fetchMe = computed(() => unref(placeRef));
+  const isEnabled = computed(() => {
+    console.log("fetchMe.value:", fetchMe.value);
+    return !!fetchMe.value && fetchMe.value.length > 2;
+  });
+
+  const query = useQuery({
+    queryKey: ["find_place", initiator, fetchMe],
+    queryFn: () => fetcher(fetchMe.value),
+    enabled: isEnabled,
+  });
+
+  console.log("Fetched Data in query:", query.data.value);
+
+  return {
+    placeData: computed(() => query.data.value || []),
+    placeRefetch: query.refetch,
+    /* placeIsFetching: computed(() => query.isFetching.value),
+    placeIsError: computed(() => query.isError.value), */
+  };
+};
