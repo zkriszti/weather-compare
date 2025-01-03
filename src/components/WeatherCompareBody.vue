@@ -13,9 +13,6 @@ let selectedCities = ref(defaultCities);
 const searchString = ref("");
 const { placeData, placeRefetch } = usePlaceQuery(searchString, "PLACE_QUERY");
 
-const handleCitiesChange = () => {
-  if (selectedCities.value.length > 2) {
-    selectedCities.value.splice(1, 1); // Remove the last selected item
 // Dynamically populate MultiSelect's dropdown based on user input:
 const placesOptions = computed(() => {
   if (placeData.value && Array.isArray(placeData.value)) {
