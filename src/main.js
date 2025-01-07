@@ -1,6 +1,7 @@
 import { createApp } from "vue";
+
 import PrimeVue from "primevue/config";
-import "primevue/resources/themes/aura-light-green/theme.css";
+import Aura from "@primevue/themes/aura";
 import Tooltip from "primevue/tooltip";
 import "./style.css";
 import App from "./App.vue";
@@ -10,7 +11,12 @@ import "@fontsource/rammetto-one";
 const app = createApp(App);
 
 app.use(VueQueryPlugin);
-app.use(PrimeVue);
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+    darkModeSelector: "system",
+  },
+});
 app.directive("tooltip", Tooltip);
 
 app.mount("#app");
