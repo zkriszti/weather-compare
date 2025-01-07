@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import MultiSelect from "primevue/multiselect";
+import Button from "primevue/button";
 import ThreeColCompareBox from "./ThreeColCompareBox.vue";
 import { usePlaceQuery } from "../data/availableCities";
 
@@ -43,6 +44,12 @@ const handleCitiesChange = (event) => {
   }
 };
 
+const reverseSelectedCities = () => {
+  [selectedCities.value[0], selectedCities.value[1]] = [
+    selectedCities.value[1],
+    selectedCities.value[0],
+  ];
+};
 
 /* -- TEMPORARY WORKAROUND UNTIL BUG https://github.com/primefaces/primevue/issues/6112 GETS FIXED IN PRIMEVUE -- */
 const handleCityRemove = (id) => {
@@ -59,6 +66,7 @@ const handleCityRemove = (id) => {
 
 <template>
   <div class="weather-compare-body">
+    <div class="weather-compare-input-area">
       <MultiSelect
         v-model="selectedCities"
         display="chip"
@@ -90,6 +98,14 @@ const handleCityRemove = (id) => {
           </Chip>
         </template>
       </MultiSelect>
+      <Button
+        icon="pi pi-arrow-right-arrow-left"
+        label="Switch"
+        size="small"
+        variant="text"
+        @click="reverseSelectedCities"
+      />
+    </div>
     <ThreeColCompareBox :selectedCities="selectedCities" />
   </div>
 </template>
@@ -97,5 +113,13 @@ const handleCityRemove = (id) => {
 <style scoped>
 .weather-compare-body {
   overflow: auto;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-items: center;
+}
+
+.weather-compare-input-area {
+  display: flex;
+  gap: 18px;
 }
 </style>
