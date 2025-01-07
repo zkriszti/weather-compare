@@ -13,7 +13,7 @@
     "@primevue/themes": "^4.2.5",
     "@tanstack/vue-query": "^5.40.0",
     "@tanstack/vue-query-devtools": "^5.40.0",
-    "@vueuse/components": "^12.2.0",
+    "@vueuse/core": "^12.3.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.5",
     "vue": "^3.5.13"
