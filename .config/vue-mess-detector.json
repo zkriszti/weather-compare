@@ -1,0 +1,3 @@
+{
+  "ignore": "elementSelectorsWithScoped,multiAttributeElements,repeatedCss,shortVariableName,elseCondition,noTsLang"
+}
