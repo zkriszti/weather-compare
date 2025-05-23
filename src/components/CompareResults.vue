@@ -1,14 +1,31 @@
 <script setup>
+import { computed } from "vue";
+
 const props = defineProps({
-  result: Number | String,
+  result: Object | String,
 });
 
-console.log(props.result);
+const MINIMAL_DIFF_FOR_SAME_WEATHER_RESULT = 2;
+
+const displayResult = computed(() => {
+  if (props.result.status === "OK") {
+    const warmerOrCooler = props.result.tempDiff > 0 ? "warmer" : "cooler";
+    return `On ${
+      props.result.currentDate
+    }, daily max. temperature is ${Math.abs(
+      props.result.tempDiff
+    )}°C ${warmerOrCooler} in ${props.result.otherCity} than in ${
+      props.result.baseCity
+    }`;
+  } else {
+    return props.result;
+  }
+});
 </script>
 
 <template>
   <div>
-    <div>{{ result }}</div>
+    <div>{{ displayResult }}</div>
   </div>
 </template>
 

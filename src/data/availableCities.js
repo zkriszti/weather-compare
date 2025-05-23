@@ -11,7 +11,6 @@ export const usePlaceQuery = (placeRef, initiator) => {
   // TODO: double-check if we really need unref here
   const fetchMe = computed(() => unref(placeRef));
   const isEnabled = computed(() => {
-    console.log("fetchMe.value:", fetchMe.value);
     return !!fetchMe.value && fetchMe.value.length > 2;
   });
 
@@ -21,12 +20,11 @@ export const usePlaceQuery = (placeRef, initiator) => {
     enabled: isEnabled,
   });
 
-  console.log("Fetched Data in query:", query.data.value);
-
   return {
     placeData: computed(() => query.data.value || []),
     placeRefetch: query.refetch,
-    /* placeIsFetching: computed(() => query.isFetching.value),
-    placeIsError: computed(() => query.isError.value), */
+    placeIsFetching: computed(() => query.isFetching.value),
+    // TODO: error handling for city query:
+    /* placeIsError: computed(() => query.isError.value), */
   };
 };

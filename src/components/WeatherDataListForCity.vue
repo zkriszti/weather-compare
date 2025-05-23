@@ -11,6 +11,12 @@ const props = defineProps({
   activeRow: Number,
 });
 
+const emit = defineEmits(["row-selected"]);
+
+const handleClick = (index) => {
+  emit("row-selected", index);
+};
+
 const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
   props.selectedCity,
   "BOX"
@@ -27,7 +33,7 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
     </div>
     <div v-else-if="weatherIsFetching" class="city-block-data-fetching">
       <div class="items-list">
-        <Skeleton width="100%" height="4rem" v-for="n in 7" />
+        <Skeleton width="100%" height="4rem" v-for="n in 7" :key="n" />
       </div>
     </div>
     <div v-else class="city-block-data-results">
@@ -41,6 +47,7 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
         >
           <WeatherDataSingleRow
             :isActiveRow="index === activeRow"
+            @click="handleClick(index)"
             displayDate
             :day="item.day"
             :min="Math.round(item.all_day.temperature_min)"
@@ -58,7 +65,7 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
   padding: 8px 0;
 }
 .items-list {
-  padding: 0 24px;
+  /* padding: 0 24px; */
   > * {
     margin-bottom: 12px;
   }

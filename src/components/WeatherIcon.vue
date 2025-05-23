@@ -1,17 +1,15 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from "vue";
 
 const props = defineProps({
-  icon: Number
-})
+  icon: Number,
+});
 
 const iconUrl = computed(() => `/weather_icons/${props.icon}.png`);
-// const iconUrl = new URL(`/weather_icons/${icon.value}.png`, import.meta.url).href;
-
 </script>
 
 <template>
-  <img :src="iconUrl" alt="">
+  <img :src="iconUrl" alt="" />
 </template>
 
 <style scoped>

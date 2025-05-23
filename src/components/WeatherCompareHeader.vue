@@ -3,7 +3,7 @@
 <template>
   <div class="header-wrapper">
     <header>
-      <h1 class="weather-compare-header">weather-compare</h1>
+      <h1 class="weather-compare-header">weather-over-there</h1>
       <img src="/weather_icons/2.png" alt="" />
     </header>
   </div>

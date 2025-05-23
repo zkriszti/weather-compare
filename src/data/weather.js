@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/vue-query";
 import { computed, unref } from "vue";
 
 const apiKey = import.meta.env.VITE_METEOSOURCE_KEY;
-// the below line gives function size error in vue-mess-detector
+
 const fetcher = async (cityId) =>
   await fetch(
     `https://www.meteosource.com/api/v1/free/point?place_id=${cityId}&sections=daily&language=en&units=metric&key=${apiKey}`

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import MultiSelect from "primevue/multiselect";
+import Chip from "primevue/chip";
 import Button from "primevue/button";
 import ThreeColCompareBox from "./ThreeColCompareBox.vue";
 import { usePlaceQuery } from "../data/availableCities";
@@ -10,9 +11,14 @@ const defaultCities = [
   { id: "valencia-2509954", name: "Valencia" },
 ];
 
+const MAX_CITIES_SELECTED = 2;
+
 let selectedCities = ref(defaultCities);
 const searchString = ref("");
-const { placeData, placeRefetch } = usePlaceQuery(searchString, "PLACE_QUERY");
+const { placeData, placeRefetch, placeIsFetching } = usePlaceQuery(
+  searchString,
+  "PLACE_QUERY"
+);
 
 // Dynamically populate MultiSelect's dropdown based on user input:
 const placesOptions = computed(() => {

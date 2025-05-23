@@ -14,27 +14,46 @@ const city2 = computed(() => props.selectedCities[1]);
 const weather1 = useWeatherQuery(city1, "COMPARE W1");
 const weather2 = useWeatherQuery(city2, "COMPARE W2");
 
+const noTwoCitiesSelected = computed(() => !city1.value || !city2.value);
+const weatherDataIsFetching = computed(
+  () => weather1.weatherIsFetching.value || weather2.weatherIsFetching.value
+);
+const weatherDataIsError = computed(
+  () => weather1.weatherIsError.value || weather2.weatherIsError.value
+);
+
 let diff = ref(0);
-const MINIMAL_DIFF_FOR_SAME_WEATHER_RESULT = 2;
+const currentlyActiveRow = ref(0);
 const DISPLAYED_DAYS_LENGTH = 7;
 
 const compareData = computed(() => {
-  if (!city1.value || !city2.value) {
+  // -- NO TWO CITIES SELECTED ---
+  if (noTwoCitiesSelected.value) {
     return "You need two selected cities for comparison";
   }
-
-  if (weather1.weatherIsFetching.value || weather2.weatherIsFetching.value) {
-    return "loading...";
-  } else if (weather1.weatherIsError.value || weather2.weatherIsError.value) {
-    return "error...";
+  // --- LOADING OR ERROR STATES ---
+  if (weatherDataIsFetching.value) {
+    return "Data is loading...";
+  } else if (weatherDataIsError.value) {
+    return "Sorry, an error occurred...";
   }
 
+  /// --- SUCCESS, CALCULATE DIFF ---
   diff.value = Math.round(
-    weather2.weatherData.value?.daily?.data?.[0]?.all_day?.temperature_max -
-      weather1.weatherData.value?.daily?.data?.[0]?.all_day?.temperature_max
+    weather2.weatherData.value?.daily?.data?.[currentlyActiveRow.value]?.all_day
+      ?.temperature_max -
+      weather1.weatherData.value?.daily?.data?.[currentlyActiveRow.value]
+        ?.all_day?.temperature_max
   );
 
-  return diff.value;
+  return {
+    tempDiff: diff.value,
+    baseCity: city1.value.name,
+    otherCity: city2.value?.name,
+    currentDate:
+      weather1.weatherData.value?.daily?.data?.[currentlyActiveRow.value].day,
+    status: "OK",
+  };
 });
 
 const changeCurrentlyActiveRow = (key) => {
@@ -46,6 +65,10 @@ const changeCurrentlyActiveRow = (key) => {
     currentlyActiveRow.value = newIndex;
   }
   console.log(currentlyActiveRow.value);
+};
+
+const setActiveRowByClick = (rowIndex) => {
+  currentlyActiveRow.value = rowIndex;
 };
 
 onMounted(() => {
@@ -62,13 +85,17 @@ onMounted(() => {
       :key="selectedCities?.[0]?.id"
       :activeRow="currentlyActiveRow"
       displayDate
-    />
+      @row-selected="setActiveRowByClick($event)"
+    >
+    </WeatherDataListForCity>
     <WeatherDataListForCity
       :selectedCity="selectedCities?.[1]"
       :key="selectedCities?.[1]?.id"
       :activeRow="currentlyActiveRow"
       displayDate
-    />
+      @row-selected="setActiveRowByClick($event)"
+    >
+    </WeatherDataListForCity>
     <CompareResults :result="compareData" />
   </div>
 </template>
@@ -82,6 +109,7 @@ onMounted(() => {
   margin-top: 24px;
 }
 .three-col-compare-box > * {
+  padding: 0 24px;
   border-radius: 8px;
   border: 1px dashed rgba(255, 255, 255, 0.87); /* #cfcdcd;*/
   display: flex;

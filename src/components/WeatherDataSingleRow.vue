@@ -9,11 +9,19 @@ const props = defineProps({
   max: Number,
   icon: Number,
 });
+
+const emit = defineEmits(["click"]);
+
+const onClick = () => {
+  emit("click");
+};
 </script>
 
 <template>
-  <!-- TODO: use classNames -->
-  <div class="item-row" :class="isActiveRow ? 'item-row-active' : null">
+  <div
+    :class="[isActiveRow ? 'item-row-active' : null, 'item-row']"
+    @click="onClick"
+  >
     <span v-if="displayDate">{{ day }}</span>
     <span>{{ min }}</span>
     <span>{{ max }}</span>
