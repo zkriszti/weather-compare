@@ -45,7 +45,7 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
           :key="`row-${item.day}`"
           :isActiveRow="index === activeRow"
           @click="handleClick(index)"
-          displayDate
+          shouldDisplayDate
           :day="item.day"
           :min="Math.round(item.all_day.temperature_min)"
           :max="Math.round(item.all_day.temperature_max)"

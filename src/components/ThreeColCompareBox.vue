@@ -84,7 +84,7 @@ onMounted(() => {
       :selectedCity="selectedCities?.[0]"
       :key="selectedCities?.[0]?.id"
       :activeRow="currentlyActiveRow"
-      displayDate
+      shouldDisplayDate
       @row-selected="setActiveRowByClick($event)"
     >
     </WeatherDataListForCity>

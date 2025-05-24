@@ -3,7 +3,7 @@ import WeatherIcon from "./WeatherIcon.vue";
 
 const props = defineProps({
   isActiveRow: Boolean,
-  displayDate: Boolean,
+  shouldDisplayDate: Boolean,
   day: String,
   min: Number,
   max: Number,
@@ -22,7 +22,7 @@ const onClick = () => {
     :class="[isActiveRow ? 'item-row-active' : null, 'item-row']"
     @click="onClick"
   >
-    <span v-if="displayDate">{{ day }}</span>
+    <span v-if="shouldDisplayDate">{{ day }}</span>
     <span>{{ min }}</span>
     <span>{{ max }}</span>
     <WeatherIcon :icon="icon" />
