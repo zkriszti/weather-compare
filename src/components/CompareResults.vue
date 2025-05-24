@@ -24,9 +24,5 @@ const displayResult = computed(() => {
 </script>
 
 <template>
-  <div>
-    <div>{{ displayResult }}</div>
-  </div>
+  <div>{{ displayResult }}</div>
 </template>
-
-<style scoped></style>

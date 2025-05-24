@@ -39,22 +39,18 @@ const { weatherData, weatherIsFetching, weatherIsError } = useWeatherQuery(
     <div v-else class="city-block-data-results">
       <!-- weatherData is loaded -->
       <div class="items-list" v-if="selectedCity">
-        <div
-          class="item-row"
+        <WeatherDataSingleRow
           v-for="(item, index) in weatherData?.daily?.data"
-          :key="`row-${item.day}`"
           v-tooltip.bottom="item.summary"
-        >
-          <WeatherDataSingleRow
-            :isActiveRow="index === activeRow"
-            @click="handleClick(index)"
-            displayDate
-            :day="item.day"
-            :min="Math.round(item.all_day.temperature_min)"
-            :max="Math.round(item.all_day.temperature_max)"
-            :icon="item.icon"
-          />
-        </div>
+          :key="`row-${item.day}`"
+          :isActiveRow="index === activeRow"
+          @click="handleClick(index)"
+          displayDate
+          :day="item.day"
+          :min="Math.round(item.all_day.temperature_min)"
+          :max="Math.round(item.all_day.temperature_max)"
+          :icon="item.icon"
+        />
       </div>
     </div>
   </div>
