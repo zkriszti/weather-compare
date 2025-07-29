@@ -10,6 +10,7 @@ const MINIMAL_DIFF_FOR_SAME_WEATHER_RESULT = 2;
 const displayResult = computed(() => {
   if (props.result.status === "OK") {
     const warmerOrCooler = props.result.tempDiff > 0 ? "warmer" : "cooler";
+
     return `On ${
       props.result.currentDate
     }, daily max. temperature is ${Math.abs(
@@ -24,5 +25,5 @@ const displayResult = computed(() => {
 </script>
 
 <template>
-  <div>{{ displayResult }}</div>
+  <p>{{ displayResult }}</p>
 </template>

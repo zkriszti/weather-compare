@@ -79,7 +79,8 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="three-col-compare-box">
+  <div class="compare-area">
+    <CompareResults :result="compareData" class="display-result" />
     <WeatherDataListForCity
       :selectedCity="selectedCities?.[0]"
       :key="selectedCities?.[0]?.id"
@@ -92,28 +93,34 @@ onMounted(() => {
       :selectedCity="selectedCities?.[1]"
       :key="selectedCities?.[1]?.id"
       :activeRow="currentlyActiveRow"
-      displayDate
+      shouldDisplayDate
       @row-selected="setActiveRowByClick($event)"
     >
     </WeatherDataListForCity>
-    <CompareResults :result="compareData" />
   </div>
 </template>
 
 <style scoped>
-.three-col-compare-box {
+.compare-area {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: min-content;
-  column-gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, min-content);
+  grid-template-areas:
+    "compare-results compare-results"
+    "city1 city2";
+  gap: 24px;
   margin-top: 24px;
 }
-.three-col-compare-box > * {
+.compare-area > * {
   padding: 0 24px;
   border-radius: 8px;
   border: 1px dashed rgba(255, 255, 255, 0.87); /* #cfcdcd;*/
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.compare-area > .display-result {
+  grid-area: compare-results;
+  padding: 24px;
 }
 </style>
